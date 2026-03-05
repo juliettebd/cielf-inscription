@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIELF — Inscription membre</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #fafaf2;
+    color: #333333;
+    padding: 0;
+    margin: 0;
+  }
+
+  .cielf-form-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 32px 20px 48px;
+  }
+
+  /* En-tête */
+  .cielf-form-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .cielf-form-header img {
+    height: 52px;
+    width: auto;
+    margin-bottom: 16px;
+  }
+  .cielf-form-header h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #13686b;
+    margin-bottom: 6px;
+  }
+  .cielf-form-header p {
+    font-size: 14px;
+    color: #666666;
+    line-height: 1.5;
+  }
+
+  /* Barre de progression */
+  .cielf-progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 32px;
+  }
+  .cielf-step-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #ccadb5;
+    color: white;
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+  .cielf-step-dot.active { background: #13686b; }
+  .cielf-step-dot.done { background: #82adad; }
+  .cielf-step-line {
+    width: 60px;
+    height: 2px;
+    background: #ccadb5;
+    transition: background 0.3s;
+  }
+  .cielf-step-line.done { background: #82adad; }
+  .cielf-step-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #999;
+    text-align: center;
+    margin-top: 4px;
+  }
+  .cielf-progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding: 0 4px;
+  }
+  .cielf-progress-labels span {
+    font-size: 11px;
+    font-weight: 700;
+    color: #999;
+    text-align: center;
+    width: 33%;
+  }
+  .cielf-progress-labels span.active { color: #13686b; }
+
+  /* Carte étape */
+  .cielf-step {
+    display: none;
+    background: white;
+    border-radius: 10px;
+    padding: 32px 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  .cielf-step.active { display: block; }
+
+  .cielf-step-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #13686b;
+    margin-bottom: 6px;
+  }
+  .cielf-step-subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  /* Champs */
+  .cielf-field {
+    margin-bottom: 18px;
+  }
+  .cielf-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 6px;
+  }
+  .cielf-field label .req { color: #861b3f; }
+  .cielf-field input,
+  .cielf-field select,
+  .cielf-field textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #dddddd;
+    border-radius: 6px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    color: #333;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .cielf-field input:focus,
+  .cielf-field select:focus,
+  .cielf-field textarea:focus {
+    border-color: #13686b;
+    box-shadow: 0 0 0 3px rgba(19,104,107,0.10);
+  }
+  .cielf-field textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+  .cielf-field .hint {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+  }
+
+  /* Grille 2 colonnes */
+  .cielf-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 480px) {
+    .cielf-row { grid-template-columns: 1fr; }
+  }
+
+  /* Formules */
+  .cielf-formules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 480px) {
+    .cielf-formules { grid-template-columns: 1fr; }
+  }
+  .cielf-formule-card {
+    border: 2px solid #dddddd;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .cielf-formule-card:hover { border-color: #82adad; }
+  .cielf-formule-card.selected {
+    border-color: #13686b;
+    background: #f0f8f8;
+  }
+  .cielf-formule-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .cielf-formule-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: #13686b;
+    margin-bottom: 4px;
+  }
+  .cielf-formule-price {
+    font-size: 20px;
+    font-weight: 800;
+    color: #861b3f;
+    margin-bottom: 4px;
+  }
+  .cielf-formule-desc {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.4;
+  }
+
+  /* Compétences (conditionnel Leadership+) */
+  #cielf-field-competences {
+    display: none;
+  }
+  #cielf-field-competences.visible {
+    display: block;
+  }
+
+  /* RGPD */
+  .cielf-rgpd {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 14px;
+    background: #f8f8f8;
+    border-radius: 6px;
+  }
+  .cielf-rgpd input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    accent-color: #13686b;
+    cursor: pointer;
+  }
+  .cielf-rgpd label {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  /* Erreur champ */
+  .cielf-field-error {
+    font-size: 12px;
+    color: #861b3f;
+    margin-top: 4px;
+    display: none;
+  }
+  .cielf-field-error.visible { display: block; }
+  .cielf-field input.error,
+  .cielf-field select.error,
+  .cielf-field textarea.error {
+    border-color: #861b3f;
+  }
+
+  /* Message erreur global */
+  .cielf-msg-erreur {
+    display: none;
+    background: #fdf0f3;
+    border: 1px solid #861b3f;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #861b3f;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .cielf-msg-erreur.visible { display: block; }
+
+  /* Navigation */
+  .cielf-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+  }
+  .cielf-btn-suivant,
+  .cielf-btn-soumettre {
+    background: #861b3f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 28px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .cielf-btn-suivant:hover,
+  .cielf-btn-soumettre:hover { background: #6b1532; }
+  .cielf-btn-suivant:disabled,
+  .cielf-btn-soumettre:disabled { background: #ccadb5; cursor: not-allowed; }
+  .cielf-btn-retour {
+    background: transparent;
+    color: #666;
+    border: 1.5px solid #ddd;
+    border-radius: 6px;
+    padding: 11px 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .cielf-btn-retour:hover { border-color: #13686b; color: #13686b; }
+
+  /* Page confirmation */
+  #cielf-confirmation {
+    display: none;
+    text-align: center;
+    background: white;
+    border-radius: 10px;
+    padding: 48px 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  #cielf-confirmation.visible { display: block; }
+  .cielf-confirm-icon {
+    width: 64px;
+    height: 64px;
+    background: #13686b;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 28px;
+  }
+  #cielf-confirmation h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #13686b;
+    margin-bottom: 12px;
+  }
+  #cielf-confirmation p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  #cielf-confirmation a {
+    color: #13686b;
+    font-weight: 700;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="cielf-form-wrap" id="cielf-form-container">
+
+  <!-- En-tête -->
+  <div class="cielf-form-header">
+    <img src="https://d1yei2z3i6k35z.cloudfront.net/15057727/69137015368ee_CIELFlogocrop.png" alt="CIELF" />
+    <h1>Créez votre profil membre</h1>
+    <p>Quelques minutes pour vous présenter à la communauté.<br>Vous pourrez compléter votre photo et votre vidéo depuis votre espace membre.</p>
+  </div>
+
+  <!-- Barre de progression -->
+  <div class="cielf-progress-bar">
+    <div class="cielf-step-dot active" id="dot-1">1</div>
+    <div class="cielf-step-line" id="line-1"></div>
+    <div class="cielf-step-dot" id="dot-2">2</div>
+    <div class="cielf-step-line" id="line-2"></div>
+    <div class="cielf-step-dot" id="dot-3">3</div>
+  </div>
+  <div class="cielf-progress-labels">
+    <span class="active" id="label-1">Votre adhésion</span>
+    <span id="label-2">Votre profil</span>
+    <span id="label-3">Vos coordonnées</span>
+  </div>
+
+  <!-- ÉTAPE 1 — Adhésion -->
+  <div class="cielf-step active" id="step-1">
+    <div class="cielf-step-title">Votre adhésion</div>
+    <div class="cielf-step-subtitle">Sélectionnez la formule correspondant à votre paiement.</div>
+
+    <div class="cielf-field">
+      <label>Formule choisie <span class="req">*</span></label>
+      <div class="cielf-formules">
+        <label class="cielf-formule-card" id="card-leadership" onclick="choisirFormule('leadership')">
+          <input type="radio" name="formule" id="radio-leadership" value="leadership" />
+          <div class="cielf-formule-name">Leadership+</div>
+          <div class="cielf-formule-price">400 €/an</div>
+          <div class="cielf-formule-desc">Implication maximale, visibilité premium, influence sur la direction de CIELF.</div>
+        </label>
+        <label class="cielf-formule-card" id="card-dynamique" onclick="choisirFormule('dynamique')">
+          <input type="radio" name="formule" id="radio-dynamique" value="dynamique" />
+          <div class="cielf-formule-name">Dynamique</div>
+          <div class="cielf-formule-price">200 €/an</div>
+          <div class="cielf-formule-desc">Accès aux événements et à l'annuaire, à votre rythme.</div>
+        </label>
+      </div>
+      <div class="cielf-field-error" id="err-formule">Veuillez sélectionner votre formule.</div>
+    </div>
+
+    <div class="cielf-rgpd">
+      <input type="checkbox" id="cielf-rgpd" />
+      <label for="cielf-rgpd">
+        J'accepte que mes données soient utilisées par CIELF ASBL pour la gestion de mon profil membre, conformément au <a href="https://www.cielf.com/gdpr" target="_blank" style="color:#13686b;font-weight:700;">règlement sur la protection des données</a>.
+      </label>
+    </div>
+    <div class="cielf-field-error" id="err-rgpd" style="margin-top:8px;">Veuillez accepter les conditions.</div>
+
+    <div class="cielf-nav">
+      <span></span>
+      <button class="cielf-btn-suivant" onclick="allerEtape(2)">Continuer →</button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 2 — Profil -->
+  <div class="cielf-step" id="step-2">
+    <div class="cielf-step-title">Votre profil CIELF</div>
+    <div class="cielf-step-subtitle">Ces informations apparaîtront dans l'annuaire des membres.</div>
+
+    <div class="cielf-field">
+      <label>Nom de l'entreprise <span class="req">*</span></label>
+      <input type="text" id="nomEntreprise" placeholder="Votre entreprise" />
+      <div class="cielf-field-error" id="err-nomEntreprise">Ce champ est obligatoire.</div>
+    </div>
+
+    <div class="cielf-field">
+      <label>Secteur d'activité <span class="req">*</span></label>
+      <input type="text" id="secteur" placeholder="Ex : Consulting, Marketing, Formation..." />
+      <div class="cielf-field-error" id="err-secteur">Ce champ est obligatoire.</div>
+    </div>
+
+    <div class="cielf-row">
+      <div class="cielf-field">
+        <label>Site web</label>
+        <input type="url" id="siteWeb" placeholder="https://..." />
+      </div>
+      <div class="cielf-field">
+        <label>LinkedIn <span class="req">*</span></label>
+        <input type="url" id="linkedin" placeholder="https://linkedin.com/in/..." />
+        <div class="cielf-field-error" id="err-linkedin">Ce champ est obligatoire.</div>
+      </div>
+    </div>
+
+    <div class="cielf-field">
+      <label>Biographie <span class="req">*</span></label>
+      <textarea id="bio" placeholder="Présentez-vous en quelques phrases : qui vous êtes, ce que vous faites, ce qui vous anime..." maxlength="1500"></textarea>
+      <div class="hint">Max 300 mots. Cette bio sera visible par les autres membres.</div>
+      <div class="cielf-field-error" id="err-bio">Ce champ est obligatoire.</div>
+    </div>
+
+    <!-- Compétences — uniquement Leadership+ -->
+    <div class="cielf-field" id="cielf-field-competences">
+      <label>Vos compétences clés <span class="req">*</span></label>
+      <input type="text" id="competences" placeholder="Ex : Stratégie internationale, Fiscalité cross-border, Marketing digital..." />
+      <div class="hint">Listez vos expertises séparées par des virgules. Elles seront affichées sur votre profil.</div>
+      <div class="cielf-field-error" id="err-competences">Ce champ est obligatoire pour les membres Leadership+.</div>
+    </div>
+
+    <div class="cielf-nav">
+      <button class="cielf-btn-retour" onclick="allerEtape(1)">← Retour</button>
+      <button class="cielf-btn-suivant" onclick="allerEtape(3)">Continuer →</button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 3 — Coordonnées -->
+  <div class="cielf-step" id="step-3">
+    <div class="cielf-step-title">Vos coordonnées</div>
+    <div class="cielf-step-subtitle">Ces informations permettent de configurer votre compte et de vous localiser dans l'annuaire.</div>
+
+    <div class="cielf-row">
+      <div class="cielf-field">
+        <label>Prénom <span class="req">*</span></label>
+        <input type="text" id="prenom" placeholder="Votre prénom" />
+        <div class="cielf-field-error" id="err-prenom">Ce champ est obligatoire.</div>
+      </div>
+      <div class="cielf-field">
+        <label>Nom <span class="req">*</span></label>
+        <input type="text" id="nom" placeholder="Votre nom" />
+        <div class="cielf-field-error" id="err-nom">Ce champ est obligatoire.</div>
+      </div>
+    </div>
+
+    <div class="cielf-field">
+      <label>Adresse e-mail <span class="req">*</span></label>
+      <input type="email" id="email" placeholder="votre@email.com" autocomplete="email" />
+      <div class="hint">Ce sera votre identifiant de connexion à l'espace membre.</div>
+      <div class="cielf-field-error" id="err-email">Veuillez saisir une adresse email valide.</div>
+    </div>
+
+    <div class="cielf-field">
+      <label>Téléphone</label>
+      <input type="tel" id="telephone" placeholder="+32 (ou +33, +41...)" />
+    </div>
+
+    <div class="cielf-field">
+      <label>Pays <span class="req">*</span></label>
+      <input type="text" id="pays" placeholder="Ex : Belgique, France, Québec..." />
+      <div class="cielf-field-error" id="err-pays">Ce champ est obligatoire.</div>
+    </div>
+
+    <div class="cielf-row">
+      <div class="cielf-field">
+        <label>Région ou province <span class="req">*</span></label>
+        <input type="text" id="region" placeholder="Ex : Wallonie, Île-de-France..." />
+        <div class="cielf-field-error" id="err-region">Ce champ est obligatoire.</div>
+      </div>
+      <div class="cielf-field">
+        <label>Ville <span class="req">*</span></label>
+        <input type="text" id="ville" placeholder="Votre ville" />
+        <div class="cielf-field-error" id="err-ville">Ce champ est obligatoire.</div>
+      </div>
+    </div>
+
+    <div class="cielf-msg-erreur" id="cielf-msg-erreur"></div>
+
+    <div class="cielf-nav">
+      <button class="cielf-btn-retour" onclick="allerEtape(2)">← Retour</button>
+      <button class="cielf-btn-soumettre" id="btn-soumettre" onclick="soumettre()">Envoyer mon profil</button>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION -->
+  <div id="cielf-confirmation">
+    <div class="cielf-confirm-icon">✓</div>
+    <h2>Bienvenue, <span id="confirm-prenom"></span> !</h2>
+    <p>Votre profil a bien été créé. Vous allez recevoir un email avec vos identifiants de connexion.</p>
+    <p>Dès réception, connectez-vous pour découvrir l'annuaire, signer l'Engagement CIELF et compléter votre profil avec votre photo.</p>
+    <p style="margin-top:20px;"><a href="https://www.cielf.com/membre-connexion">→ Accéder à l'espace membre</a></p>
+  </div>
+
+</div>
+
+<script>
+// ── URL Apps Script à remplacer après déploiement ──
+var APPS_SCRIPT_URL = 'REMPLACER_PAR_URL_APPS_SCRIPT';
+
+var etapeActuelle = 1;
+var formuleChoisie = '';
+
+// Sélection formule
+function choisirFormule(formule) {
+  formuleChoisie = formule;
+  document.getElementById('radio-' + formule).checked = true;
+  document.getElementById('card-leadership').classList.remove('selected');
+  document.getElementById('card-dynamique').classList.remove('selected');
+  document.getElementById('card-' + formule).classList.add('selected');
+
+  // Afficher/masquer compétences
+  var champComp = document.getElementById('cielf-field-competences');
+  if (formule === 'leadership') {
+    champComp.classList.add('visible');
+  } else {
+    champComp.classList.remove('visible');
+    document.getElementById('competences').value = '';
+  }
+
+  // Masquer erreur formule
+  document.getElementById('err-formule').classList.remove('visible');
+}
+
+// Navigation entre étapes
+function allerEtape(numero) {
+  if (numero > etapeActuelle && !validerEtape(etapeActuelle)) return;
+
+  document.getElementById('step-' + etapeActuelle).classList.remove('active');
+  document.getElementById('dot-' + etapeActuelle).classList.remove('active');
+  document.getElementById('dot-' + etapeActuelle).classList.add('done');
+  if (etapeActuelle < 3) {
+    document.getElementById('line-' + etapeActuelle).classList.add('done');
+  }
+  document.getElementById('label-' + etapeActuelle).classList.remove('active');
+
+  etapeActuelle = numero;
+
+  document.getElementById('step-' + etapeActuelle).classList.add('active');
+  document.getElementById('dot-' + etapeActuelle).classList.remove('done');
+  document.getElementById('dot-' + etapeActuelle).classList.add('active');
+  document.getElementById('label-' + etapeActuelle).classList.add('active');
+
+  window.scrollTo(0, 0);
+}
+
+// Validation par étape
+function validerEtape(etape) {
+  var ok = true;
+
+  if (etape === 1) {
+    if (!formuleChoisie) {
+      document.getElementById('err-formule').classList.add('visible');
+      ok = false;
+    }
+    if (!document.getElementById('cielf-rgpd').checked) {
+      document.getElementById('err-rgpd').classList.add('visible');
+      ok = false;
+    } else {
+      document.getElementById('err-rgpd').classList.remove('visible');
+    }
+  }
+
+  if (etape === 2) {
+    ok = validerChamp('nomEntreprise') && ok;
+    ok = validerChamp('secteur') && ok;
+    ok = validerChamp('linkedin') && ok;
+    ok = validerChamp('bio') && ok;
+    if (formuleChoisie === 'leadership') {
+      ok = validerChamp('competences') && ok;
+    }
+  }
+
+  if (etape === 3) {
+    ok = validerChamp('prenom') && ok;
+    ok = validerChamp('nom') && ok;
+    ok = validerEmail() && ok;
+    ok = validerChamp('pays') && ok;
+    ok = validerChamp('region') && ok;
+    ok = validerChamp('ville') && ok;
+  }
+
+  return ok;
+}
+
+function validerChamp(id) {
+  var val = document.getElementById(id).value.trim();
+  var errEl = document.getElementById('err-' + id);
+  if (!val) {
+    document.getElementById(id).classList.add('error');
+    if (errEl) errEl.classList.add('visible');
+    return false;
+  }
+  document.getElementById(id).classList.remove('error');
+  if (errEl) errEl.classList.remove('visible');
+  return true;
+}
+
+function validerEmail() {
+  var val = document.getElementById('email').value.trim();
+  var errEl = document.getElementById('err-email');
+  var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!val || !re.test(val)) {
+    document.getElementById('email').classList.add('error');
+    errEl.classList.add('visible');
+    return false;
+  }
+  document.getElementById('email').classList.remove('error');
+  errEl.classList.remove('visible');
+  return true;
+}
+
+// Soumission
+function soumettre() {
+  if (!validerEtape(3)) return;
+
+  var btn = document.getElementById('btn-soumettre');
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours...';
+
+  // Fuseau Europe/Brussels
+  var maintenant = new Date().toLocaleString('fr-BE', { timeZone: 'Europe/Brussels' });
+
+  var data = {
+    dateInscription: maintenant,
+    formule: formuleChoisie === 'leadership' ? 'Leadership+' : 'Dynamique',
+    membershipType: formuleChoisie,
+    prenom: document.getElementById('prenom').value.trim(),
+    nom: document.getElementById('nom').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    telephone: document.getElementById('telephone').value.trim(),
+    pays: document.getElementById('pays').value.trim(),
+    region: document.getElementById('region').value.trim(),
+    ville: document.getElementById('ville').value.trim(),
+    nomEntreprise: document.getElementById('nomEntreprise').value.trim(),
+    secteur: document.getElementById('secteur').value.trim(),
+    siteWeb: document.getElementById('siteWeb').value.trim(),
+    linkedin: document.getElementById('linkedin').value.trim(),
+    bio: document.getElementById('bio').value.trim(),
+    competences: formuleChoisie === 'leadership' ? document.getElementById('competences').value.trim() : ''
+  };
+
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify(data)
+  })
+  .then(function(response) { return response.json(); })
+  .then(function(result) {
+    if (result.status === 'ok') {
+      // Masquer formulaire, afficher confirmation
+      document.getElementById('cielf-form-container').querySelector('.cielf-form-header').style.display = 'none';
+      document.querySelectorAll('.cielf-progress-bar, .cielf-progress-labels').forEach(function(el) {
+        el.style.display = 'none';
+      });
+      document.getElementById('step-3').classList.remove('active');
+      document.getElementById('confirm-prenom').textContent = data.prenom;
+      document.getElementById('cielf-confirmation').classList.add('visible');
+      window.scrollTo(0, 0);
+    } else {
+      afficherErreur(result.message || 'Une erreur est survenue. Veuillez réessayer.');
+      btn.disabled = false;
+      btn.textContent = 'Envoyer mon profil';
+    }
+  })
+  .catch(function() {
+    afficherErreur('Impossible de contacter le serveur. Vérifiez votre connexion et réessayez.');
+    btn.disabled = false;
+    btn.textContent = 'Envoyer mon profil';
+  });
+}
+
+function afficherErreur(msg) {
+  var el = document.getElementById('cielf-msg-erreur');
+  el.textContent = msg;
+  el.classList.add('visible');
+}
+</script>
+
+</body>
+</html>
