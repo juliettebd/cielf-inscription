@@ -70,7 +70,7 @@
     flex-shrink: 0;
   }
   .cielf-step-dot.active { background: #13686b; }
-  .cielf-step-dot.done { background: #82adad; }
+  .cielf-step-dot.done   { background: #82adad; }
   .cielf-step-line {
     width: 60px;
     height: 2px;
@@ -78,13 +78,6 @@
     transition: background 0.3s;
   }
   .cielf-step-line.done { background: #82adad; }
-  .cielf-step-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: #999;
-    text-align: center;
-    margin-top: 4px;
-  }
   .cielf-progress-labels {
     display: flex;
     justify-content: space-between;
@@ -124,9 +117,7 @@
   }
 
   /* Champs */
-  .cielf-field {
-    margin-bottom: 18px;
-  }
+  .cielf-field { margin-bottom: 18px; }
   .cielf-field label {
     display: block;
     font-size: 13px;
@@ -155,36 +146,26 @@
     border-color: #13686b;
     box-shadow: 0 0 0 3px rgba(19,104,107,0.10);
   }
-  .cielf-field textarea {
-    resize: vertical;
-    min-height: 90px;
-  }
-  .cielf-field .hint {
-    font-size: 11px;
-    color: #999;
-    margin-top: 4px;
+  .cielf-field textarea { resize: vertical; min-height: 90px; }
+  .cielf-field .hint { font-size: 11px; color: #999; margin-top: 4px; }
+  .cielf-field input[readonly] {
+    background: #f5f5f5;
+    color: #888;
+    cursor: not-allowed;
   }
 
   /* Grille 2 colonnes */
-  .cielf-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-  @media (max-width: 480px) {
-    .cielf-row { grid-template-columns: 1fr; }
-  }
+  .cielf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 480px) { .cielf-row { grid-template-columns: 1fr; } }
 
-  /* Formules */
+  /* Formules — sans prix */
   .cielf-formules {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
     margin-bottom: 18px;
   }
-  @media (max-width: 480px) {
-    .cielf-formules { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 480px) { .cielf-formules { grid-template-columns: 1fr; } }
   .cielf-formule-card {
     border: 2px solid #dddddd;
     border-radius: 8px;
@@ -194,41 +175,26 @@
     position: relative;
   }
   .cielf-formule-card:hover { border-color: #82adad; }
-  .cielf-formule-card.selected {
-    border-color: #13686b;
-    background: #f0f8f8;
-  }
-  .cielf-formule-card input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  .cielf-formule-name {
-    font-size: 15px;
-    font-weight: 800;
-    color: #13686b;
-    margin-bottom: 4px;
-  }
-  .cielf-formule-price {
-    font-size: 20px;
-    font-weight: 800;
-    color: #861b3f;
-    margin-bottom: 4px;
-  }
-  .cielf-formule-desc {
-    font-size: 12px;
-    color: #888;
-    line-height: 1.4;
-  }
+  .cielf-formule-card.selected { border-color: #13686b; background: #f0f8f8; }
+  .cielf-formule-card input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .cielf-formule-name { font-size: 16px; font-weight: 800; color: #13686b; margin-bottom: 6px; }
+  .cielf-formule-desc { font-size: 12px; color: #888; line-height: 1.4; }
 
-  /* Compétences (conditionnel Leadership+) */
-  #cielf-field-competences {
+  /* Compétences conditionnel Leadership+ */
+  #cielf-field-competences { display: none; }
+  #cielf-field-competences.visible { display: block; }
+
+  /* Erreurs champs */
+  .cielf-field-error {
+    font-size: 12px;
+    color: #861b3f;
+    margin-top: 4px;
     display: none;
   }
-  #cielf-field-competences.visible {
-    display: block;
-  }
+  .cielf-field-error.visible { display: block; }
+  .cielf-field input.error,
+  .cielf-field select.error,
+  .cielf-field textarea.error { border-color: #861b3f; }
 
   /* RGPD */
   .cielf-rgpd {
@@ -248,30 +214,7 @@
     accent-color: #13686b;
     cursor: pointer;
   }
-  .cielf-rgpd label {
-    font-size: 12px;
-    color: #555;
-    line-height: 1.5;
-    cursor: pointer;
-  }
-
-  /* Erreur champ */
-  .cielf-field input[readonly] {
-    background: #f5f5f5;
-    color: #888;
-    cursor: not-allowed;
-  }
-    font-size: 12px;
-    color: #861b3f;
-    margin-top: 4px;
-    display: none;
-  }
-  .cielf-field-error.visible { display: block; }
-  .cielf-field input.error,
-  .cielf-field select.error,
-  .cielf-field textarea.error {
-    border-color: #861b3f;
-  }
+  .cielf-rgpd label { font-size: 12px; color: #555; line-height: 1.5; cursor: pointer; }
 
   /* Message erreur global */
   .cielf-msg-erreur {
@@ -287,6 +230,20 @@
     margin-top: 16px;
   }
   .cielf-msg-erreur.visible { display: block; }
+
+  /* Bandeau pré-remplissage */
+  .cielf-prefill-notice {
+    display: none;
+    background: #e8f5f5;
+    border: 1px solid #82adad;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #13686b;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .cielf-prefill-notice.visible { display: block; }
 
   /* Navigation */
   .cielf-nav {
@@ -346,24 +303,11 @@
     justify-content: center;
     margin: 0 auto 20px;
     font-size: 28px;
+    color: white;
   }
-  #cielf-confirmation h2 {
-    font-size: 22px;
-    font-weight: 800;
-    color: #13686b;
-    margin-bottom: 12px;
-  }
-  #cielf-confirmation p {
-    font-size: 14px;
-    color: #666;
-    line-height: 1.7;
-    margin-bottom: 8px;
-  }
-  #cielf-confirmation a {
-    color: #13686b;
-    font-weight: 700;
-    text-decoration: none;
-  }
+  #cielf-confirmation h2 { font-size: 22px; font-weight: 800; color: #13686b; margin-bottom: 12px; }
+  #cielf-confirmation p { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 8px; }
+  #cielf-confirmation a { color: #13686b; font-weight: 700; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -386,42 +330,66 @@
     <div class="cielf-step-dot" id="dot-3">3</div>
   </div>
   <div class="cielf-progress-labels">
-    <span class="active" id="label-1">Votre adhésion</span>
-    <span id="label-2">Votre profil</span>
-    <span id="label-3">Vos coordonnées</span>
+    <span class="active" id="label-1">Vos coordonnées</span>
+    <span id="label-2">Votre business</span>
+    <span id="label-3">Votre adhésion</span>
   </div>
 
-  <!-- ÉTAPE 1 — Adhésion -->
+  <!-- ══════════════════════════════════════════
+       ÉTAPE 1 — Coordonnées (nom/prénom/contact)
+       ══════════════════════════════════════════ -->
   <div class="cielf-step active" id="step-1">
-    <div class="cielf-step-title">Votre adhésion</div>
-    <div class="cielf-step-subtitle">Sélectionnez la formule correspondant à votre paiement.</div>
+    <div class="cielf-step-title">Vos coordonnées</div>
+    <div class="cielf-step-subtitle">Ces informations permettent de configurer votre compte et de vous localiser dans l'annuaire.</div>
+
+    <!-- Bandeau affiché si pré-remplissage depuis candidature -->
+    <div class="cielf-prefill-notice" id="prefill-notice">
+      ✓ Certains champs ont été pré-remplis depuis votre dossier de candidature. Vérifiez et complétez si nécessaire.
+    </div>
+
+    <div class="cielf-row">
+      <div class="cielf-field">
+        <label>Prénom <span class="req">*</span></label>
+        <input type="text" id="prenom" placeholder="Votre prénom" />
+        <div class="cielf-field-error" id="err-prenom">Ce champ est obligatoire.</div>
+      </div>
+      <div class="cielf-field">
+        <label>Nom <span class="req">*</span></label>
+        <input type="text" id="nom" placeholder="Votre nom" />
+        <div class="cielf-field-error" id="err-nom">Ce champ est obligatoire.</div>
+      </div>
+    </div>
 
     <div class="cielf-field">
-      <label>Formule choisie <span class="req">*</span></label>
-      <div class="cielf-formules">
-        <label class="cielf-formule-card" id="card-leadership" onclick="choisirFormule('leadership')">
-          <input type="radio" name="formule" id="radio-leadership" value="leadership" />
-          <div class="cielf-formule-name">Leadership+</div>
-          <div class="cielf-formule-price">400 €/an</div>
-          <div class="cielf-formule-desc">Implication maximale, visibilité premium, influence sur la direction de CIELF.</div>
-        </label>
-        <label class="cielf-formule-card" id="card-dynamique" onclick="choisirFormule('dynamique')">
-          <input type="radio" name="formule" id="radio-dynamique" value="dynamique" />
-          <div class="cielf-formule-name">Dynamique</div>
-          <div class="cielf-formule-price">200 €/an</div>
-          <div class="cielf-formule-desc">Accès aux événements et à l'annuaire, à votre rythme.</div>
-        </label>
-      </div>
-      <div class="cielf-field-error" id="err-formule">Veuillez sélectionner votre formule.</div>
+      <label>Adresse e-mail <span class="req">*</span></label>
+      <input type="email" id="email" placeholder="votre@email.com" autocomplete="email" />
+      <div class="hint">Ce sera votre identifiant de connexion à l'espace membre.</div>
+      <div class="cielf-field-error" id="err-email">Veuillez saisir une adresse email valide.</div>
     </div>
 
-    <div class="cielf-rgpd">
-      <input type="checkbox" id="cielf-rgpd" />
-      <label for="cielf-rgpd">
-        J'accepte que mes données soient utilisées par CIELF ASBL pour la gestion de mon profil membre, conformément au <a href="https://www.cielf.com/gdpr" target="_blank" style="color:#13686b;font-weight:700;">règlement sur la protection des données</a>.
-      </label>
+    <div class="cielf-field">
+      <label>Téléphone</label>
+      <input type="tel" id="telephone" placeholder="+32 (ou +33, +41...)" />
     </div>
-    <div class="cielf-field-error" id="err-rgpd" style="margin-top:8px;">Veuillez accepter les conditions.</div>
+
+    <div class="cielf-field">
+      <label>Pays <span class="req">*</span></label>
+      <input type="text" id="pays" placeholder="Ex : Belgique, France, Québec..." />
+      <div class="cielf-field-error" id="err-pays">Ce champ est obligatoire.</div>
+    </div>
+
+    <div class="cielf-row">
+      <div class="cielf-field">
+        <label>Région ou province <span class="req">*</span></label>
+        <input type="text" id="region" placeholder="Ex : Wallonie, Île-de-France..." />
+        <div class="cielf-field-error" id="err-region">Ce champ est obligatoire.</div>
+      </div>
+      <div class="cielf-field">
+        <label>Ville <span class="req">*</span></label>
+        <input type="text" id="ville" placeholder="Votre ville" />
+        <div class="cielf-field-error" id="err-ville">Ce champ est obligatoire.</div>
+      </div>
+    </div>
 
     <div class="cielf-nav">
       <span></span>
@@ -429,7 +397,9 @@
     </div>
   </div>
 
-  <!-- ÉTAPE 2 — Profil -->
+  <!-- ══════════════════════════════════════════
+       ÉTAPE 2 — Business
+       ══════════════════════════════════════════ -->
   <div class="cielf-step" id="step-2">
     <div class="cielf-step-title">Votre profil CIELF</div>
     <div class="cielf-step-subtitle">Ces informations apparaîtront dans l'annuaire des membres.</div>
@@ -479,54 +449,37 @@
     </div>
   </div>
 
-  <!-- ÉTAPE 3 — Coordonnées -->
+  <!-- ══════════════════════════════════════════
+       ÉTAPE 3 — Formule + RGPD (sans prix)
+       ══════════════════════════════════════════ -->
   <div class="cielf-step" id="step-3">
-    <div class="cielf-step-title">Vos coordonnées</div>
-    <div class="cielf-step-subtitle">Ces informations permettent de configurer votre compte et de vous localiser dans l'annuaire.</div>
-
-    <div class="cielf-row">
-      <div class="cielf-field">
-        <label>Prénom <span class="req">*</span></label>
-        <input type="text" id="prenom" placeholder="Votre prénom" />
-        <div class="cielf-field-error" id="err-prenom">Ce champ est obligatoire.</div>
-      </div>
-      <div class="cielf-field">
-        <label>Nom <span class="req">*</span></label>
-        <input type="text" id="nom" placeholder="Votre nom" />
-        <div class="cielf-field-error" id="err-nom">Ce champ est obligatoire.</div>
-      </div>
-    </div>
+    <div class="cielf-step-title">Votre adhésion</div>
+    <div class="cielf-step-subtitle">Confirmez la formule correspondant à votre paiement.</div>
 
     <div class="cielf-field">
-      <label>Adresse e-mail <span class="req">*</span></label>
-      <input type="email" id="email" placeholder="votre@email.com" autocomplete="email" />
-      <div class="hint">Ce sera votre identifiant de connexion à l'espace membre.</div>
-      <div class="cielf-field-error" id="err-email">Veuillez saisir une adresse email valide.</div>
-    </div>
-
-    <div class="cielf-field">
-      <label>Téléphone</label>
-      <input type="tel" id="telephone" placeholder="+32 (ou +33, +41...)" />
-    </div>
-
-    <div class="cielf-field">
-      <label>Pays <span class="req">*</span></label>
-      <input type="text" id="pays" placeholder="Ex : Belgique, France, Québec..." />
-      <div class="cielf-field-error" id="err-pays">Ce champ est obligatoire.</div>
-    </div>
-
-    <div class="cielf-row">
-      <div class="cielf-field">
-        <label>Région ou province <span class="req">*</span></label>
-        <input type="text" id="region" placeholder="Ex : Wallonie, Île-de-France..." />
-        <div class="cielf-field-error" id="err-region">Ce champ est obligatoire.</div>
+      <label>Formule choisie <span class="req">*</span></label>
+      <div class="cielf-formules">
+        <label class="cielf-formule-card" id="card-leadership" onclick="choisirFormule('leadership')">
+          <input type="radio" name="formule" id="radio-leadership" value="leadership" />
+          <div class="cielf-formule-name">Leadership+</div>
+          <div class="cielf-formule-desc">Implication maximale, visibilité premium, influence sur la direction de CIELF.</div>
+        </label>
+        <label class="cielf-formule-card" id="card-dynamique" onclick="choisirFormule('dynamique')">
+          <input type="radio" name="formule" id="radio-dynamique" value="dynamique" />
+          <div class="cielf-formule-name">Dynamique</div>
+          <div class="cielf-formule-desc">Accès aux événements et à l'annuaire, à votre rythme.</div>
+        </label>
       </div>
-      <div class="cielf-field">
-        <label>Ville <span class="req">*</span></label>
-        <input type="text" id="ville" placeholder="Votre ville" />
-        <div class="cielf-field-error" id="err-ville">Ce champ est obligatoire.</div>
-      </div>
+      <div class="cielf-field-error" id="err-formule">Veuillez sélectionner votre formule.</div>
     </div>
+
+    <div class="cielf-rgpd">
+      <input type="checkbox" id="cielf-rgpd" />
+      <label for="cielf-rgpd">
+        J'accepte que mes données soient utilisées par CIELF ASBL pour la gestion de mon profil membre, conformément au <a href="https://www.cielf.com/gdpr" target="_blank" style="color:#13686b;font-weight:700;">règlement sur la protection des données</a>.
+      </label>
+    </div>
+    <div class="cielf-field-error" id="err-rgpd" style="margin-top:8px;">Veuillez accepter les conditions.</div>
 
     <div class="cielf-msg-erreur" id="cielf-msg-erreur"></div>
 
@@ -547,204 +500,257 @@
 
 </div>
 
-<script>
-// ── URL Apps Script à remplacer après déploiement ──
-var APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbxkDXjdWHXROTIe5lL9xpubfR_HhAEuuQIoPeDI2PvznrnAIxEQTxCDmT-FCrYPNJ8/exec';
-var RECAPTCHA_SITE_KEY = '6LdSSYAsAAAAACVGIMZEmyIpVEDRpCro5_LHDwKh';
+<!-- Firebase SDK + pré-remplissage -->
+<script type="module">
+  import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, doc, getDoc }
+    from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-var etapeActuelle = 1;
-var formuleChoisie = '';
+  var firebaseConfig = {
+    apiKey:            "AIzaSyD7JCajQFLChA-1qa-_QfuadAeKlrb58ek",
+    authDomain:        "cielf-membres.firebaseapp.com",
+    projectId:         "cielf-membres",
+    storageBucket:     "cielf-membres.firebasestorage.app",
+    messagingSenderId: "534062662676",
+    appId:             "1:534062662676:web:eab7dbe36db86716195301"
+  };
 
-// Préremplissage email depuis paramètre URL
-window.addEventListener('load', function() {
-  var params = new URLSearchParams(window.location.search);
-  var emailParam = params.get('email');
-  if (emailParam) {
+  var app = initializeApp(firebaseConfig);
+  var db  = getFirestore(app);
+
+  // ── Pré-remplissage depuis collection candidates ──────────────
+  // Le lien personnalisé contient ?email=jean_at_gmail_com
+  // L'ID du document candidates = email nettoyé (@ → _at_, . → _)
+  window.addEventListener('load', async function() {
+    var params     = new URLSearchParams(window.location.search);
+    var emailParam = params.get('email');
+
+    if (!emailParam) return; // pas de paramètre → formulaire vierge
+
+    // Pré-remplir l'email et le verrouiller
     var inputEmail = document.getElementById('email');
     inputEmail.value = emailParam;
     inputEmail.setAttribute('readonly', true);
-  }
-});
 
-// Sélection formule
-function choisirFormule(formule) {
-  formuleChoisie = formule;
-  document.getElementById('radio-' + formule).checked = true;
-  document.getElementById('card-leadership').classList.remove('selected');
-  document.getElementById('card-dynamique').classList.remove('selected');
-  document.getElementById('card-' + formule).classList.add('selected');
+    // Construire l'ID du document candidates
+    var docId = emailParam.replace(/@/g, '_at_').replace(/\./g, '_');
 
-  // Afficher/masquer compétences
-  var champComp = document.getElementById('cielf-field-competences');
-  if (formule === 'leadership') {
-    champComp.classList.add('visible');
-  } else {
-    champComp.classList.remove('visible');
-    document.getElementById('competences').value = '';
-  }
+    try {
+      var snap = await getDoc(doc(db, 'candidates', docId));
+      if (!snap.exists()) return; // candidature introuvable → on laisse vide
 
-  // Masquer erreur formule
-  document.getElementById('err-formule').classList.remove('visible');
-}
+      var c = snap.data();
 
-// Navigation entre étapes
-function allerEtape(numero) {
-  if (numero > etapeActuelle && !validerEtape(etapeActuelle)) return;
+      // Coordonnées
+      if (c.prenom)    document.getElementById('prenom').value    = c.prenom;
+      if (c.nom)       document.getElementById('nom').value       = c.nom;
+      if (c.telephone) document.getElementById('telephone').value = c.telephone;
+      if (c.pays)      document.getElementById('pays').value      = c.pays;
+      if (c.ville)     document.getElementById('ville').value     = c.ville;
+      // region n'est pas dans candidates — laissé vide
 
-  document.getElementById('step-' + etapeActuelle).classList.remove('active');
-  document.getElementById('dot-' + etapeActuelle).classList.remove('active');
-  document.getElementById('dot-' + etapeActuelle).classList.add('done');
-  if (etapeActuelle < 3) {
-    document.getElementById('line-' + etapeActuelle).classList.add('done');
-  }
-  document.getElementById('label-' + etapeActuelle).classList.remove('active');
+      // Business
+      if (c.nomEntreprise) document.getElementById('nomEntreprise').value = c.nomEntreprise;
+      if (c.secteur)       document.getElementById('secteur').value       = c.secteur;
+      if (c.siteWeb)       document.getElementById('siteWeb').value       = c.siteWeb;
+      if (c.linkedin)      document.getElementById('linkedin').value      = c.linkedin;
 
-  etapeActuelle = numero;
+      // Afficher le bandeau de confirmation
+      document.getElementById('prefill-notice').classList.add('visible');
 
-  document.getElementById('step-' + etapeActuelle).classList.add('active');
-  document.getElementById('dot-' + etapeActuelle).classList.remove('done');
-  document.getElementById('dot-' + etapeActuelle).classList.add('active');
-  document.getElementById('label-' + etapeActuelle).classList.add('active');
-
-  window.scrollTo(0, 0);
-}
-
-// Validation par étape
-function validerEtape(etape) {
-  var ok = true;
-
-  if (etape === 1) {
-    if (!formuleChoisie) {
-      document.getElementById('err-formule').classList.add('visible');
-      ok = false;
+    } catch (err) {
+      // Échec silencieux — le formulaire reste vierge, rien ne bloque
+      console.warn('Pré-remplissage impossible :', err.message);
     }
-    if (!document.getElementById('cielf-rgpd').checked) {
-      document.getElementById('err-rgpd').classList.add('visible');
-      ok = false;
-    } else {
-      document.getElementById('err-rgpd').classList.remove('visible');
-    }
-  }
-
-  if (etape === 2) {
-    ok = validerChamp('nomEntreprise') && ok;
-    ok = validerChamp('secteur') && ok;
-    ok = validerChamp('linkedin') && ok;
-    ok = validerChamp('bio') && ok;
-    if (formuleChoisie === 'leadership') {
-      ok = validerChamp('competences') && ok;
-    }
-  }
-
-  if (etape === 3) {
-    ok = validerChamp('prenom') && ok;
-    ok = validerChamp('nom') && ok;
-    ok = validerEmail() && ok;
-    ok = validerChamp('pays') && ok;
-    ok = validerChamp('region') && ok;
-    ok = validerChamp('ville') && ok;
-  }
-
-  return ok;
-}
-
-function validerChamp(id) {
-  var val = document.getElementById(id).value.trim();
-  var errEl = document.getElementById('err-' + id);
-  if (!val) {
-    document.getElementById(id).classList.add('error');
-    if (errEl) errEl.classList.add('visible');
-    return false;
-  }
-  document.getElementById(id).classList.remove('error');
-  if (errEl) errEl.classList.remove('visible');
-  return true;
-}
-
-function validerEmail() {
-  var val = document.getElementById('email').value.trim();
-  var errEl = document.getElementById('err-email');
-  var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!val || !re.test(val)) {
-    document.getElementById('email').classList.add('error');
-    errEl.classList.add('visible');
-    return false;
-  }
-  document.getElementById('email').classList.remove('error');
-  errEl.classList.remove('visible');
-  return true;
-}
-
-// Soumission
-function soumettre() {
-  if (!validerEtape(3)) return;
-
-  var btn = document.getElementById('btn-soumettre');
-  btn.disabled = true;
-  btn.textContent = 'Vérification en cours...';
-
-  // reCAPTCHA v3 — vérification invisible
-  grecaptcha.ready(function() {
-    grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'inscription' }).then(function(token) {
-
-      var maintenant = new Date().toLocaleString('fr-BE', { timeZone: 'Europe/Brussels' });
-
-      var data = {
-        dateInscription: maintenant,
-        formule: formuleChoisie === 'leadership' ? 'Leadership+' : 'Dynamique',
-        membershipType: formuleChoisie,
-        prenom: document.getElementById('prenom').value.trim(),
-        nom: document.getElementById('nom').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        telephone: document.getElementById('telephone').value.trim(),
-        pays: document.getElementById('pays').value.trim(),
-        region: document.getElementById('region').value.trim(),
-        ville: document.getElementById('ville').value.trim(),
-        nomEntreprise: document.getElementById('nomEntreprise').value.trim(),
-        secteur: document.getElementById('secteur').value.trim(),
-        siteWeb: document.getElementById('siteWeb').value.trim(),
-        linkedin: document.getElementById('linkedin').value.trim(),
-        bio: document.getElementById('bio').value.trim(),
-        competences: formuleChoisie === 'leadership' ? document.getElementById('competences').value.trim() : '',
-        recaptchaToken: token
-      };
-
-      fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify(data)
-      })
-      .then(function(response) { return response.json(); })
-      .then(function(result) {
-        if (result.status === 'ok') {
-          document.getElementById('cielf-form-container').querySelector('.cielf-form-header').style.display = 'none';
-          document.querySelectorAll('.cielf-progress-bar, .cielf-progress-labels').forEach(function(el) {
-            el.style.display = 'none';
-          });
-          document.getElementById('step-3').classList.remove('active');
-          document.getElementById('confirm-prenom').textContent = data.prenom;
-          document.getElementById('cielf-confirmation').classList.add('visible');
-          window.scrollTo(0, 0);
-        } else {
-          afficherErreur(result.message || 'Une erreur est survenue. Veuillez réessayer.');
-          btn.disabled = false;
-          btn.textContent = 'Envoyer mon profil';
-        }
-      })
-      .catch(function() {
-        afficherErreur('Impossible de contacter le serveur. Vérifiez votre connexion et réessayez.');
-        btn.disabled = false;
-        btn.textContent = 'Envoyer mon profil';
-      });
-
-    });
   });
-}
+</script>
 
-function afficherErreur(msg) {
-  var el = document.getElementById('cielf-msg-erreur');
-  el.textContent = msg;
-  el.classList.add('visible');
-}
+<!-- Logique formulaire (ES5 — pas de module) -->
+<script>
+  var APPS_SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycbxkDXjdWHXROTIe5lL9xpubfR_HhAEuuQIoPeDI2PvznrnAIxEQTxCDmT-FCrYPNJ8/exec';
+  var RECAPTCHA_SITE_KEY = '6LdSSYAsAAAAACVGIMZEmyIpVEDRpCro5_LHDwKh';
+
+  var etapeActuelle = 1;
+  var formuleChoisie = '';
+
+  // ── Sélection formule ─────────────────────────────────────────
+  function choisirFormule(formule) {
+    formuleChoisie = formule;
+    document.getElementById('radio-' + formule).checked = true;
+    document.getElementById('card-leadership').classList.remove('selected');
+    document.getElementById('card-dynamique').classList.remove('selected');
+    document.getElementById('card-' + formule).classList.add('selected');
+
+    // Afficher/masquer compétences selon formule
+    var champComp = document.getElementById('cielf-field-competences');
+    if (formule === 'leadership') {
+      champComp.classList.add('visible');
+    } else {
+      champComp.classList.remove('visible');
+      document.getElementById('competences').value = '';
+    }
+
+    document.getElementById('err-formule').classList.remove('visible');
+  }
+
+  // ── Navigation entre étapes ───────────────────────────────────
+  function allerEtape(numero) {
+    if (numero > etapeActuelle && !validerEtape(etapeActuelle)) return;
+
+    document.getElementById('step-' + etapeActuelle).classList.remove('active');
+    document.getElementById('dot-' + etapeActuelle).classList.remove('active');
+    document.getElementById('dot-' + etapeActuelle).classList.add('done');
+    if (etapeActuelle < 3) {
+      document.getElementById('line-' + etapeActuelle).classList.add('done');
+    }
+    document.getElementById('label-' + etapeActuelle).classList.remove('active');
+
+    etapeActuelle = numero;
+
+    document.getElementById('step-' + etapeActuelle).classList.add('active');
+    document.getElementById('dot-' + etapeActuelle).classList.remove('done');
+    document.getElementById('dot-' + etapeActuelle).classList.add('active');
+    document.getElementById('label-' + etapeActuelle).classList.add('active');
+
+    window.scrollTo(0, 0);
+  }
+
+  // ── Validation par étape ──────────────────────────────────────
+  function validerEtape(etape) {
+    var ok = true;
+
+    if (etape === 1) {
+      ok = validerChamp('prenom')  && ok;
+      ok = validerChamp('nom')     && ok;
+      ok = validerEmail()          && ok;
+      ok = validerChamp('pays')    && ok;
+      ok = validerChamp('region')  && ok;
+      ok = validerChamp('ville')   && ok;
+    }
+
+    if (etape === 2) {
+      ok = validerChamp('nomEntreprise') && ok;
+      ok = validerChamp('secteur')       && ok;
+      ok = validerChamp('linkedin')      && ok;
+      ok = validerChamp('bio')           && ok;
+      if (formuleChoisie === 'leadership') {
+        ok = validerChamp('competences') && ok;
+      }
+    }
+
+    if (etape === 3) {
+      if (!formuleChoisie) {
+        document.getElementById('err-formule').classList.add('visible');
+        ok = false;
+      }
+      if (!document.getElementById('cielf-rgpd').checked) {
+        document.getElementById('err-rgpd').classList.add('visible');
+        ok = false;
+      } else {
+        document.getElementById('err-rgpd').classList.remove('visible');
+      }
+    }
+
+    return ok;
+  }
+
+  function validerChamp(id) {
+    var el    = document.getElementById(id);
+    var val   = el.value.trim();
+    var errEl = document.getElementById('err-' + id);
+    if (!val) {
+      el.classList.add('error');
+      if (errEl) errEl.classList.add('visible');
+      return false;
+    }
+    el.classList.remove('error');
+    if (errEl) errEl.classList.remove('visible');
+    return true;
+  }
+
+  function validerEmail() {
+    var val   = document.getElementById('email').value.trim();
+    var errEl = document.getElementById('err-email');
+    var re    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!val || !re.test(val)) {
+      document.getElementById('email').classList.add('error');
+      errEl.classList.add('visible');
+      return false;
+    }
+    document.getElementById('email').classList.remove('error');
+    errEl.classList.remove('visible');
+    return true;
+  }
+
+  // ── Soumission ────────────────────────────────────────────────
+  function soumettre() {
+    if (!validerEtape(3)) return;
+
+    var btn = document.getElementById('btn-soumettre');
+    btn.disabled    = true;
+    btn.textContent = 'Vérification en cours...';
+
+    grecaptcha.ready(function() {
+      grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'inscription' }).then(function(token) {
+
+        var maintenant = new Date().toLocaleString('fr-BE', { timeZone: 'Europe/Brussels' });
+
+        var data = {
+          dateInscription: maintenant,
+          formule:         formuleChoisie === 'leadership' ? 'Leadership+' : 'Dynamique',
+          membershipType:  formuleChoisie,
+          prenom:          document.getElementById('prenom').value.trim(),
+          nom:             document.getElementById('nom').value.trim(),
+          email:           document.getElementById('email').value.trim(),
+          telephone:       document.getElementById('telephone').value.trim(),
+          pays:            document.getElementById('pays').value.trim(),
+          region:          document.getElementById('region').value.trim(),
+          ville:           document.getElementById('ville').value.trim(),
+          nomEntreprise:   document.getElementById('nomEntreprise').value.trim(),
+          secteur:         document.getElementById('secteur').value.trim(),
+          siteWeb:         document.getElementById('siteWeb').value.trim(),
+          linkedin:        document.getElementById('linkedin').value.trim(),
+          bio:             document.getElementById('bio').value.trim(),
+          competences:     formuleChoisie === 'leadership' ? document.getElementById('competences').value.trim() : '',
+          recaptchaToken:  token
+        };
+
+        fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body:   JSON.stringify(data)
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(result) {
+          if (result.status === 'ok') {
+            document.getElementById('cielf-form-container').querySelector('.cielf-form-header').style.display = 'none';
+            document.querySelectorAll('.cielf-progress-bar, .cielf-progress-labels').forEach(function(el) {
+              el.style.display = 'none';
+            });
+            document.getElementById('step-3').classList.remove('active');
+            document.getElementById('confirm-prenom').textContent = data.prenom;
+            document.getElementById('cielf-confirmation').classList.add('visible');
+            window.scrollTo(0, 0);
+          } else {
+            afficherErreur(result.message || 'Une erreur est survenue. Veuillez réessayer.');
+            btn.disabled    = false;
+            btn.textContent = 'Envoyer mon profil';
+          }
+        })
+        .catch(function() {
+          afficherErreur('Impossible de contacter le serveur. Vérifiez votre connexion et réessayez.');
+          btn.disabled    = false;
+          btn.textContent = 'Envoyer mon profil';
+        });
+
+      });
+    });
+  }
+
+  function afficherErreur(msg) {
+    var el = document.getElementById('cielf-msg-erreur');
+    el.textContent = msg;
+    el.classList.add('visible');
+  }
 </script>
 
 </body>
